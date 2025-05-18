@@ -46,7 +46,14 @@ function App() {
   return (
     <>
       <Toaster />
-      <SearchBar onSubmit={handleSearch} />
+      <SearchBar
+        action={(formData) => {
+          const query = formData.get("query")?.toString().trim();
+          if (query) {
+            handleSearch(query);
+          }
+        }}
+      />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {!isLoading && !error && movies.length > 0 && (
