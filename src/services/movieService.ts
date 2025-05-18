@@ -20,6 +20,7 @@ export async function fetchMovies({
       },
       headers: {
         Authorization: `Bearer ${API_KEY}`,
+        Accept: "application/json",
       },
     }
   );
