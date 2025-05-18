@@ -10,15 +10,15 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  const closeModal = () => {
+  const closeModal: () => void = () => {
     setSelectedMovie(null);
   };
 
-  const handleSearch = async (query: string) => {
+  const handleSearch: (query: string) => Promise<void> = async (query) => {
     if (!query.trim()) {
       toast.error("Please enter your search query.");
       return;
@@ -46,7 +46,14 @@ function App() {
   return (
     <>
       <Toaster />
-      <SearchBar onSubmit={handleSearch} />
+      <SearchBar
+        action={(formData) => {
+          const query = formData.get("query")?.toString().trim();
+          if (query) {
+            handleSearch(query);
+          }
+        }}
+      />
       {isLoading && <Loader />}
       {error && <ErrorMessage />}
       {!isLoading && !error && movies.length > 0 && (
