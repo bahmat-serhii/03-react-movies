@@ -1,21 +1,21 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import type { Movie } from "../../types/movie";
 import styles from "./MovieModal.module.css";
 
 interface MovieModalProps {
-  movie: Movie | null;
+  movie: Movie;
   onClose: () => void;
 }
 
-function MovieModal({ movie, onClose }: MovieModalProps) {
+const MovieModal: React.FC<MovieModalProps> = ({ movie, onClose }) => {
   useEffect(() => {
+    document.body.style.overflow = "hidden";
+
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
       }
     };
-
-    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleEsc);
 
     return () => {
@@ -29,8 +29,6 @@ function MovieModal({ movie, onClose }: MovieModalProps) {
       onClose();
     }
   };
-
-  if (!movie) return null;
 
   return (
     <div
@@ -65,6 +63,6 @@ function MovieModal({ movie, onClose }: MovieModalProps) {
       </div>
     </div>
   );
-}
+};
 
 export default MovieModal;

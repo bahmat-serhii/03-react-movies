@@ -2,6 +2,9 @@ import axios from "axios";
 import type { AxiosResponse } from "axios";
 import type { Movie } from "../types/movie";
 
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
+
 interface FetchMoviesParams {
   query: string;
 }
@@ -9,16 +12,17 @@ interface FetchMoviesParams {
 export async function fetchMovies({
   query,
 }: FetchMoviesParams): Promise<Movie[]> {
-  const url = "https://api.themoviedb.org/3/search/movie";
-
-  const response: AxiosResponse<{ results: Movie[] }> = await axios.get(url, {
-    params: {
-      query,
-    },
-    headers: {
-      Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-    },
-  });
+  const response: AxiosResponse<{ results: Movie[] }> = await axios.get(
+    `${BASE_URL}/search/movie`,
+    {
+      params: {
+        query,
+      },
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    }
+  );
 
   return response.data.results;
 }
